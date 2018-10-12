@@ -9,6 +9,11 @@ namespace SMARTscan_DataProcessor
     {
         static void Main(string[] args)
         {
+            //Testing
+
+            //VboxFileController.TransformWGS83ToOSGB(51.84380467, 0.18919483);
+            //Console.ReadKey();
+
             var rc = HostFactory.Run(x =>
             {
                 x.Service<SmscanDirector>(sc =>
@@ -44,5 +49,6 @@ namespace SMARTscan_DataProcessor
             AppLogger.LogInformation("Carnell service windows service: Topshelf installation is configured");
             new System.Threading.AutoResetEvent(false).WaitOne();
         }
+        
     }
 }

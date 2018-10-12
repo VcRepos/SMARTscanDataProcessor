@@ -2,11 +2,27 @@
 using System.Collections.Generic;
 using System.IO;
 using OSGeo.OGR;
+using OSGeo.OSR;
 
 namespace SMARTscan_DataProcessor
 {
     public static class VboxFileController
     {
+        public static double[] TransformWGS83ToOSGB(double latitude, double longitude)
+        {
+            SpatialReference src = new SpatialReference("");
+            src.ImportFromEPSG(4326);
+            SpatialReference dst = new SpatialReference("");
+            dst.ImportFromEPSG(27700);
+            CoordinateTransformation ct = new CoordinateTransformation(src, dst);
+            double[] point = new double[3];
+            point[0] = longitude;
+            point[1] = latitude;
+            point[2] = 0;
+            ct.TransformPoint(point);
+            return point;
+        }
+
         public static void ProcessVboxData(string directPath)
         {
             //Define the required module and file path
@@ -76,7 +92,11 @@ namespace SMARTscan_DataProcessor
                             string id = couter.ToString();
                             couter++;
 
-                            string[] strLocation = new string[] { id, name, degreeLat.ToString(), degreeLon.ToString() };
+                            // Implement coordinate transformation
+                            double X = TransformWGS83ToOSGB(degreeLat, degreeLon)[0];
+                            double Y = TransformWGS83ToOSGB(degreeLat, degreeLon)[1];
+
+                            string[] strLocation = new string[] { id, name, X.ToString(), Y.ToString() };
 
                             ConvertedData.Add(strLocation);
                         }
