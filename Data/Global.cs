@@ -9,6 +9,7 @@ namespace SMARTscan_DataProcessor.Data
         public static string SMsourceFolder = ConfigurationManager.AppSettings["SourceFolder"];
         public static string SMbackupFolder = ConfigurationManager.AppSettings["BackupFolder"];
         public static string SMGeodatabase = ConfigurationManager.AppSettings["MdbDatabase"];
+        public static string SMNetdriveFolder = ConfigurationManager.AppSettings["NetdriveFolder"];
 
         public static string PyscriptPath = ConfigurationManager.AppSettings["Pyscript"];
         public static string Pyenvironment = ConfigurationManager.AppSettings["Pyenvironment"];

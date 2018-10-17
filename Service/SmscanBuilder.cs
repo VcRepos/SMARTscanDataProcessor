@@ -86,8 +86,27 @@ namespace SMARTscan_DataProcessor
             //Implement a python script to manipulate fields to required formats
             PopulateGIS();
 
+            //Copy data from local machine to network drive
+            CopyFileFolder();
+
             //Send Notification
-            SendNotification();
+            SendNotificationWithPath();
+        }
+
+        private void CopyFileFolder()
+        {
+            string localFd = WorkingScheme.SchemePath;
+            string remoteFd = Path.Combine(Global.SMNetdriveFolder, WorkingScheme.SchemeName);
+
+            if (Directory.Exists(remoteFd))
+            {
+                Directory.Delete(remoteFd);
+            }
+
+            DirectoryHelper.Copy(localFd, remoteFd);
+            AppLogger.LogInformation("Drainage File database is sucessfully created");
+
+
         }
 
         #endregion
@@ -222,9 +241,11 @@ namespace SMARTscan_DataProcessor
         /// <summary>
         /// Send emails to the registered stakeholders
         /// </summary>
-        private void SendNotification()
+        private void SendNotificationWithPath()
         {
-            MailSender.SendNotification(WorkingScheme.SchemeName);
+            //MailSender.SendNotification(WorkingScheme.SchemeName);
+            string remoteFd = Path.Combine(Global.SMNetdriveFolder, WorkingScheme.SchemeName);
+            MailSender.SendNotificationWithPath(WorkingScheme.SchemeName, remoteFd);
             AppLogger.LogInformation($"Smartscan email notification has been sent!");
         }
 
